@@ -56,7 +56,7 @@ public class RobotRepositoryInMemory : IRobotRepository
         return robotToCreate;
     }
 
-    public async Task<bool> Update(Robot robotToUpdate)
+    public async Task<int> Update(Robot robotToUpdate)
     {
         await Task.Delay(500);
 
@@ -66,13 +66,13 @@ public class RobotRepositoryInMemory : IRobotRepository
         {
             _robots.Remove(robotToReplace);
             _robots.Add(robotToUpdate);
-            return true;
+            return 1; // rows affected
         }
 
-        return false;
+        return 0; // rows affected
     }
 
-    public async Task<bool> Delete(int id)
+    public async Task<int> Delete(int id)
     {
         await Task.Delay(500);
 
@@ -81,9 +81,9 @@ public class RobotRepositoryInMemory : IRobotRepository
         if(robotToDelete is not null)
         {
              _robots.Remove(robotToDelete);
-             return true;
+             return 1; // rows affected
         }
 
-        return false;
+        return 0; // rows affected
     } 
 }
