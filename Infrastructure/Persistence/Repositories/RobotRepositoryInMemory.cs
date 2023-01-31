@@ -1,3 +1,5 @@
+using Application.Interfaces.Repositories;
+
 namespace Infrastructure.Persistence.Repositories;
 
 public class RobotRepositoryInMemory : IRobotRepository
