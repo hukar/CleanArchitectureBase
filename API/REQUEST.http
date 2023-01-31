@@ -1,0 +1,9 @@
+@url=http://localhost:5238
+
+GET {{url}}/robots HTTP/1.1
+
+###
+GET {{url}}/robots/2 HTTP/1.1
+
+###
+GET {{url}}/robots/99 HTTP/1.1
