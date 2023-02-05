@@ -10,6 +10,12 @@ public class UpdateRobotHandler : ICommandHandler<UpdateRobotCommand>
             _repo = repo;  
     }
     
-    public async Task<int> Handle(UpdateRobotCommand command, CancellationToken cancellationToken) => await _repo.Update(_mapper.Map<Robot>(command.RobotToUpdate));
+    public async Task<int> Handle(UpdateRobotCommand command, CancellationToken cancellationToken) 
+    {
+        var robotToUpdate = _mapper.Map<Robot>(command.RobotToUpdate);
+        robotToUpdate.Id = command.Id;
+        
+        return await _repo.Update(robotToUpdate);
+    }
 
 }
