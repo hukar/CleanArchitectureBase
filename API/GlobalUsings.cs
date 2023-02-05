@@ -12,6 +12,8 @@ global using Application.Robots.Queries.GetAllRobots;
 global using Application.Robots.Queries.GetRobotById;
 global using Application.Robots.Commands.CreateRobot;
 global using Application.Robots.Commands.UpdateRobot;
+global using Application.Robots.Commands.DeleteRobot;
+
 
 global using MediatR;
 global using FluentValidation;

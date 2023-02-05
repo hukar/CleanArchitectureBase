@@ -50,3 +50,7 @@ Content-Type: application/json
 {
     "codeName": ""
 }
+###
+DELETE {{url}}/robots/2 HTTP/1.1
+###
+DELETE {{url}}/robots/222 HTTP/1.1

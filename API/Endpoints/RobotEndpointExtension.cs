@@ -33,6 +33,14 @@ public static class RobotEndpointExtension
         })
             .AddEndpointFilter<ValidationFilter<CreateUpdateRobotDto>>();
 
+        route.MapDelete("/{id:int}", async (int id, ISender sender) => {
+            var rowsAffected = await sender.Send(new DeleteRobotCommand(id));
+
+            if(rowsAffected == 0) return NotFound();
+
+            return NoContent();
+        });
+
         return app;
     }
 }
