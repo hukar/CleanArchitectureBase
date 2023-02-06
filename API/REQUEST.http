@@ -1,5 +1,9 @@
 @url=http://localhost:5238
 
+GET {{url}}/exceptiontest HTTP/1.1
+
+###
+
 GET {{url}}/robots HTTP/1.1
 
 ###

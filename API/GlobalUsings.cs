@@ -1,7 +1,11 @@
 global using static Microsoft.AspNetCore.Http.Results;
+global using System.Net;
+
 
 global using API.Endpoints;
 global using API.Filters;
+global using API.Middlewares;
+
 
 global using Infrastructure.Persistence.Repositories;
 

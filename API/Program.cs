@@ -12,6 +12,9 @@ builder.Services.AddValidatorsFromAssemblyContaining<ApplicationAssembly>();
 
 var app = builder.Build();
 
+app.UseMiddleware<ExceptionHandlingMiddleware>();
+
 app.MapRobot();
+app.MapTestHandleException();
 
 app.Run();
