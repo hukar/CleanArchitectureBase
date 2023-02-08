@@ -17,5 +17,4 @@ public class UpdateRobotHandler : ICommandHandler<UpdateRobotCommand>
         
         return await _repo.Update(robotToUpdate);
     }
-
 }

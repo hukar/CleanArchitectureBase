@@ -18,7 +18,7 @@ public class ValidationFilter<TToValidate> : IEndpointFilter
 
             if(entityReceive is TToValidate entityToValidate)
             {
-                var result = _validator.Validate(entityToValidate);
+                var result = await _validator.ValidateAsync(entityToValidate);
 
                 if(result.IsValid == false)
                 {

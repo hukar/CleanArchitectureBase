@@ -1,6 +1,6 @@
 namespace Application.Validators;
 
-public class CreateUpdateRobotDtoValidator : AbstractValidator<CreateUpdateRobotDto>
+public class CreateUpdateRobotDtoValidator : AbstractValidator<CreateUpdateRobotDto> 
 {
     public CreateUpdateRobotDtoValidator()
     {

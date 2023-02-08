@@ -8,6 +8,7 @@ global using API.Middlewares;
 
 
 global using Infrastructure.Persistence.Repositories;
+global using Infrastructure.Persistence.Database;
 
 global using Application;
 global using Application.Dtos;

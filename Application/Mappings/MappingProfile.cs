@@ -1,5 +1,3 @@
-using Application.Dtos;
-
 namespace Application.Mappings;
 
 public class MappingProfile : Profile
