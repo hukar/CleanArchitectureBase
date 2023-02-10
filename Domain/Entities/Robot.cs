@@ -1,6 +1,6 @@
 namespace Domain.Entities;
 
-public class Robot
+public class Robot : ISaveableInDb
 {
     public int Id { get; set; }
     public string CodeName { get; set; } = string.Empty;
