@@ -3,11 +3,16 @@
 GET {{url}}/exceptiontest HTTP/1.1
 
 ###
-
 GET {{url}}/robots HTTP/1.1
 
 ###
+GET {{url}}/robots/withweapons HTTP/1.1
+
+###
 GET {{url}}/robots/2 HTTP/1.1
+
+###
+GET {{url}}/robots/1/withweapons HTTP/1.1
 
 ###
 GET {{url}}/robots/99 HTTP/1.1

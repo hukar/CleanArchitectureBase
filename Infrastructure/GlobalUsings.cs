@@ -1,6 +1,9 @@
 global using Microsoft.Extensions.Configuration;
 global using System.Data;
 
+global using Infrastructure.Persistence.Database;
+
+
 global using Application.Interfaces.Repositories;
 
 global using Domain.Entities;

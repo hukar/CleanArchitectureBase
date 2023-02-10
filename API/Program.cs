@@ -1,12 +1,11 @@
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddSingleton<IRobotRepository, RobotRepositoryInMemory>();
-builder.Services.AddSingleton<DapperContext>();
-builder.Services.AddAutoMapper(typeof(ApplicationAssembly));
-builder.Services.AddMediatR(typeof(ApplicationAssembly));
-builder.Services.AddValidatorsFromAssemblyContaining<ApplicationAssembly>();
+builder.AddApplicationServices();
 
 var app = builder.Build();
+
+var dbBootstrap = app.Services.GetRequiredService<DatabaseBootstrap>();
+await dbBootstrap.Bootstrap();
 
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 

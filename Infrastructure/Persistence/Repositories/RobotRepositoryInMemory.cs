@@ -5,17 +5,17 @@ namespace Infrastructure.Persistence.Repositories;
 public class RobotRepositoryInMemory : IRobotRepository
 {
     private readonly List<Robot> _robots = new() {
-        new Robot {Id = 1, CodeName = "TT-99", CreatedDate = new DateTime(2016, 11, 23), Weapons = new List<Weapon> {
+        new Robot {Id = 1, CodeName = "TT-99", CreatedAt = new DateTime(2016, 11, 23), Weapons = new List<Weapon> {
             new Weapon { Id = 5, Name = "Ice Sword" },
             new Weapon { Id = 18, Name = "Two Bullet Gun" },
             new Weapon { Id = 20, Name = "Tri Photonic Blaster" },
         }},
-        new Robot {Id = 2, CodeName = "Z8-PT", CreatedDate = new DateTime(2018, 8, 12), Weapons = new List<Weapon>()},
-        new Robot {Id = 3, CodeName = "BBB-3", CreatedDate = new DateTime(2018, 2, 21), Weapons = new List<Weapon> {
+        new Robot {Id = 2, CodeName = "Z8-PT", CreatedAt = new DateTime(2018, 8, 12), Weapons = new List<Weapon>()},
+        new Robot {Id = 3, CodeName = "BBB-3", CreatedAt = new DateTime(2018, 2, 21), Weapons = new List<Weapon> {
             new Weapon { Id = 12, Name = "Fire Blaster"},
             new Weapon { Id = 9, Name = "Double Silicium Axe"},
         }},
-        new Robot {Id = 4, CodeName = "234-ACT", CreatedDate = new DateTime(2017, 6, 3), Weapons = new List<Weapon>()},
+        new Robot {Id = 4, CodeName = "234-ACT", CreatedAt = new DateTime(2017, 6, 3), Weapons = new List<Weapon>()},
     };
 
     public async Task<IEnumerable<Robot>> GetAll()
@@ -25,7 +25,7 @@ public class RobotRepositoryInMemory : IRobotRepository
         return _robots;
     }
 
-    public async Task<List<Robot>> GetAllRobotsWithWeapon()
+    public async Task<IEnumerable<Robot>> GetAllRobotsWithWeapons()
     {
         await Task.Delay(500);
 
@@ -39,7 +39,7 @@ public class RobotRepositoryInMemory : IRobotRepository
         return _robots.SingleOrDefault(r => r.Id == id);
     }
 
-    public async Task<Robot?> GetRobotByIdWithWeapon(int id)
+    public async Task<Robot?> GetRobotWithWeaponsById(int id)
     {
         await Task.Delay(500);
 

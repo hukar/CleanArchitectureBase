@@ -11,7 +11,7 @@ public class GetAllRobotsHandler : IQueryHandler<GetAllRobotsQuery, IEnumerable<
         _mapper = mapper;
     }
 
-    public async Task<IEnumerable<GetRobotDto>> Handle(GetAllRobotsQuery request, CancellationToken cancellationToken)
+    public async Task<IEnumerable<GetRobotDto>> Handle(GetAllRobotsQuery query, CancellationToken cancellationToken)
     {
         var robots = await _repo.GetAll();
 

@@ -9,16 +9,67 @@ public class DatabaseBootstrap
     {
         _context = context;
     }
-    public void FillDb<TToInsert>(params TToInsert[] itemsToInsert)
-        where TToInsert : ISaveableInDb
+    public async Task Bootstrap()
+    {
+        await DropTables();
+        await CreateDb();
+        await Task.WhenAll(
+            FillRobotDb(
+                new Robot { CodeName = "JO-JO"},
+                new Robot { CodeName = "VBG-67"},
+                new Robot { CodeName = "HJ-89"},
+                new Robot { CodeName = "MICH-3L"}
+            ), 
+            FillWeaponDb(
+                new Weapon { Name = "Light Saber Blue", RobotId = 1},
+                new Weapon { Name = "GunBlast Of Thunder", RobotId = 1},
+                new Weapon { Name = "Royal Night Lazer Gun", RobotId = 1},
+                new Weapon { Name = "Ultra Sword Of Fire", RobotId = 2},
+                new Weapon { Name = "Radical Blaster Gen II", RobotId = 2},
+                new Weapon { Name = "Double Axe Energisor", RobotId = 3}
+            )
+        );
+    }
+    private async Task FillRobotDb(params Robot[] robotsToInsert)
     {
         if(_isCreated == false)
         {
             Console.WriteLine("Use the method CreateDb first");
             return;
         }
+
+        var sql = @"INSERT INTO Robot (CodeName, CreatedAt, CreatedBy)
+                    VALUES (@CodeName, @CreatedAt, @CreatedBy)";
+
+        foreach(var robot in robotsToInsert)
+        {
+            robot.CreatedAt = DateTime.Now;
+            robot.CreatedBy = "System";
+        }
+        
+        using var connection = _context.CreateConnection();
+        await connection.ExecuteAsync(sql, robotsToInsert);
+
+        Console.WriteLine($"{robotsToInsert.Count()} robots was inserted successfuly");
     }
-    public async void CreateDb()
+
+    private async Task FillWeaponDb(params Weapon[] weaponsToInsert)
+    {
+        if(_isCreated == false)
+        {
+            Console.WriteLine("Use the method CreateDb first");
+            return;
+        }
+
+        var sql = @"INSERT INTO Weapon (Name, RobotId)
+                    VALUES (@Name, @RobotId)";
+
+        using var connection = _context.CreateConnection();
+        await connection.ExecuteAsync(sql, weaponsToInsert);
+
+        Console.WriteLine($"{weaponsToInsert.Count()} weapons was inserted successfuly");
+    }
+    private async Task CreateDb()
     {
         var sql = "";
         var tables = new List<string>();
@@ -28,8 +79,10 @@ public class DatabaseBootstrap
             sql += @"CREATE TABLE Robot (
                         Id INTEGER PRIMARY KEY,
                         CodeName TEXT,
-                        CreatedDate TEXT,
-                        WeaponId INTEGER
+                        CreatedAt TEXT,
+                        CreatedBy TEXT,
+                        ModifiedAt TEXT,
+                        ModifiedBY
                     );";
 
             tables.Add("Robot");
@@ -39,7 +92,8 @@ public class DatabaseBootstrap
         {
             sql += @"CREATE TABLE Weapon (
                         Id INTEGER PRIMARY KEY,
-                        Name TEXT
+                        Name TEXT,
+                        RobotID INTEGER
                     );";
 
             tables.Add("Weapon");
@@ -52,9 +106,20 @@ public class DatabaseBootstrap
             await connection.ExecuteAsync(sql);
             _isCreated = true;
             Console.WriteLine($"table(s) {string.Join(" and ",tables)} are created");
+            return;
         }
         
         Console.WriteLine("tables Robot and Weapon already exists");
+    }
+
+    private async Task DropTables()
+    {
+        var sql = @"DROP TABLE Robot;
+                    DROP TABLE Weapon";
+
+        using var connection = _context.CreateConnection();
+        await connection.ExecuteAsync(sql);
+        Console.WriteLine("Tables Robot and Weapon are dropped");
     }
 
     private bool IsTableExists(string tableName)

@@ -8,14 +8,17 @@ public static class RobotEndpointExtension
                         
         route.MapGet("/", async (ISender sender) => await sender.Send(new GetAllRobotsQuery()));
 
-        route.MapGet("/{id:int}", async (int id, ISender sender) =>
-        {
-            var robot = await sender.Send(new GetRobotByIdQuery(id));
+        route.MapGet("/withweapons", async (ISender sender) 
+            => await sender.Send(new GetAllRobotsWithWeaponsQuery())
+        );
 
-            if (robot is null) return NotFound();
+        route.MapGet("/{id:int}", async (int id, ISender sender) 
+            => (await sender.Send(new GetRobotByIdQuery(id))) is GetRobotDto robot ? Ok(robot) : NotFound()
+        );
 
-            return Ok(robot);
-        });
+        route.MapGet("/{id:int}/withweapons", async (int id, ISender sender) 
+            => (await sender.Send(new GetRobotWithWeaponsByIdQuery(id))) is GetRobotWithWeaponsDto robot ? Ok(robot) : NotFound()
+        );
 
         route.MapPost("/", async (CreateUpdateRobotDto robotToCreate, ISender sender) => {
             var robotCreated = await sender.Send(new CreateRobotCommand(robotToCreate));
