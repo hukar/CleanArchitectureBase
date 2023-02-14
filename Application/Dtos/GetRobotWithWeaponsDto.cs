@@ -1,4 +1,4 @@
 namespace Application.Dtos;
 
-public record GetRobotWithWeaponsDto(int Id, string CodeName, List<Weapon> Weapons);
+public record GetRobotWithWeaponsDto(int Id, string CodeName, List<GetWeaponInRobotDto> Weapons);
 

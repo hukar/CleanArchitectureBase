@@ -1,6 +1,6 @@
 namespace API.Endpoints;
 
-public static class RobotEndpointExtension
+public static class RobotEndpointsExtension
 {
     public static WebApplication MapRobot(this WebApplication app)
     {

@@ -14,6 +14,8 @@ public class GetAllRobotsWithWeaponsHandler : IQueryHandler<GetAllRobotsWithWeap
     {
         var robots = await _repo.GetAllRobotsWithWeapons();
 
-        return _mapper.Map<IEnumerable<GetRobotWithWeaponsDto>>(robots);
+        var result = _mapper.Map<IEnumerable<GetRobotWithWeaponsDto>>(robots);
+
+        return result;
     }
 }

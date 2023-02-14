@@ -9,24 +9,64 @@ public class DatabaseBootstrap
     {
         _context = context;
     }
-    public async Task Bootstrap()
+
+    public async Task CreateDb()
     {
         await DropTables();
-        await CreateDb();
+
+        var sql = "";
+        var tables = new List<string>();
+        
+        if(IsTableExists("Robot") == false)
+        {
+            sql += @"CREATE TABLE Robot (
+                        Id INTEGER PRIMARY KEY,
+                        CodeName TEXT,
+                        CreatedAt TEXT,
+                        CreatedBy TEXT,
+                        ModifiedAt TEXT,
+                        ModifiedBY
+                    );";
+
+            tables.Add("Robot");
+        }
+
+        if(IsTableExists("Weapon") == false)
+        {
+            sql += @"CREATE TABLE Weapon (
+                        Id INTEGER PRIMARY KEY,
+                        Name TEXT,
+                        RobotID INTEGER
+                    );";
+
+            tables.Add("Weapon");
+        }
+
+        if(string.IsNullOrEmpty(sql) == false)
+        {
+            using var connection = _context.CreateConnection();
+
+            await connection.ExecuteAsync(sql);
+            _isCreated = true;
+            Console.WriteLine($"table(s) {string.Join(" and ",tables)} are created");
+            return;
+        }
+        
+        Console.WriteLine("tables Robot and Weapon already exists");
+    }
+
+    public async Task FillDb()
+    {
         await Task.WhenAll(
             FillRobotDb(
                 new Robot { CodeName = "JO-JO"},
                 new Robot { CodeName = "VBG-67"},
-                new Robot { CodeName = "HJ-89"},
                 new Robot { CodeName = "MICH-3L"}
             ), 
             FillWeaponDb(
                 new Weapon { Name = "Light Saber Blue", RobotId = 1},
-                new Weapon { Name = "GunBlast Of Thunder", RobotId = 1},
-                new Weapon { Name = "Royal Night Lazer Gun", RobotId = 1},
                 new Weapon { Name = "Ultra Sword Of Fire", RobotId = 2},
-                new Weapon { Name = "Radical Blaster Gen II", RobotId = 2},
-                new Weapon { Name = "Double Axe Energisor", RobotId = 3}
+                new Weapon { Name = "Radical Blaster Gen II", RobotId = 2}
             )
         );
     }
@@ -69,53 +109,11 @@ public class DatabaseBootstrap
 
         Console.WriteLine($"{weaponsToInsert.Count()} weapons was inserted successfuly");
     }
-    private async Task CreateDb()
-    {
-        var sql = "";
-        var tables = new List<string>();
-        
-        if(IsTableExists("Robot") == false)
-        {
-            sql += @"CREATE TABLE Robot (
-                        Id INTEGER PRIMARY KEY,
-                        CodeName TEXT,
-                        CreatedAt TEXT,
-                        CreatedBy TEXT,
-                        ModifiedAt TEXT,
-                        ModifiedBY
-                    );";
-
-            tables.Add("Robot");
-        }
-
-        if(IsTableExists("Weapon") == false)
-        {
-            sql += @"CREATE TABLE Weapon (
-                        Id INTEGER PRIMARY KEY,
-                        Name TEXT,
-                        RobotID INTEGER
-                    );";
-
-            tables.Add("Weapon");
-        }
-
-        if(string.IsNullOrEmpty(sql) == false)
-        {
-            using var connection = _context.CreateConnection();
-
-            await connection.ExecuteAsync(sql);
-            _isCreated = true;
-            Console.WriteLine($"table(s) {string.Join(" and ",tables)} are created");
-            return;
-        }
-        
-        Console.WriteLine("tables Robot and Weapon already exists");
-    }
 
     private async Task DropTables()
     {
-        var sql = @"DROP TABLE Robot;
-                    DROP TABLE Weapon";
+        var sql = @"DROP TABLE IF EXISTS Robot;
+                    DROP TABLE IF EXISTS Weapon";
 
         using var connection = _context.CreateConnection();
         await connection.ExecuteAsync(sql);

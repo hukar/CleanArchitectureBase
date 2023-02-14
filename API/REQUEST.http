@@ -3,6 +3,15 @@
 GET {{url}}/exceptiontest HTTP/1.1
 
 ###
+GET {{url}}/dbsqlite/fill HTTP/1.1
+
+###
+GET {{url}}/dbsqlite/create HTTP/1.1
+
+###
+GET {{url}}/exceptiontest HTTP/1.1
+
+###
 GET {{url}}/robots HTTP/1.1
 
 ###
@@ -12,7 +21,7 @@ GET {{url}}/robots/withweapons HTTP/1.1
 GET {{url}}/robots/2 HTTP/1.1
 
 ###
-GET {{url}}/robots/1/withweapons HTTP/1.1
+GET {{url}}/robots/3/withweapons HTTP/1.1
 
 ###
 GET {{url}}/robots/99 HTTP/1.1
@@ -63,3 +72,4 @@ Content-Type: application/json
 DELETE {{url}}/robots/2 HTTP/1.1
 ###
 DELETE {{url}}/robots/222 HTTP/1.1
+
