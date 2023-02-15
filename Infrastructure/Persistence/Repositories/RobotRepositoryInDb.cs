@@ -6,7 +6,7 @@ public class RobotRepositoryInDb : IRobotRepository
     
     public RobotRepositoryInDb(DapperContext context)
     {
-            _context = context;   
+        _context = context;   
     }
 
     public async Task<IEnumerable<Robot>> GetAll()
