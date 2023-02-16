@@ -75,9 +75,22 @@ public class RobotRepositoryInDb : IRobotRepository
         return robot;
     }
 
-    public Task<Robot> Create(Robot entityToCreate)
+    public async Task<Robot> Create(Robot entityToCreate)
     {
-        throw new NotImplementedException();
+        var sql = @"INSERT INTO Robot ( CodeName, CreatedAt, CreatedBY )
+                    VALUES ( @CodeName, @CreatedAt, @CreatedBy );
+                    SELECT last_insert_rowid();";
+
+        using var connection = _context.CreateConnection();
+
+        entityToCreate.CreatedAt = DateTime.Now;
+        entityToCreate.CreatedBy = "SYSTEM";
+
+        var lastInsertedId = await connection.ExecuteScalarAsync<int>(sql, entityToCreate);
+
+        entityToCreate.Id = lastInsertedId;
+
+        return entityToCreate;
     }
 
     public Task<int> Update(Robot entityToUpdate)
