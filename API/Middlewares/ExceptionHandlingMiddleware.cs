@@ -17,9 +17,10 @@ public class ExceptionHandlingMiddleware
         {
             await _next(context);
         }
-        catch (Exception Ex)
+        catch (Exception ex)
         {
-            _logger.LogError(Ex.Message);
+            _logger.LogError(ex.GetType().ToString());
+            _logger.LogError( $"💀 : {ex.Message}");
             await HandleExceptionAsync(context.Response);
         }
     }
