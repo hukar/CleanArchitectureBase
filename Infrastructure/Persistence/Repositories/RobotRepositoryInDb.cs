@@ -93,13 +93,35 @@ public class RobotRepositoryInDb : IRobotRepository
         return entityToCreate;
     }
 
-    public Task<int> Update(Robot entityToUpdate)
+    public async Task<int> Update(Robot entityToUpdate)
     {
-        throw new NotImplementedException();
+        var sql = @"UPDATE Robot
+                    SET 
+                        CodeName = @CodeName,
+                        ModifiedAt = @ModifiedAt,
+                        ModifiedBy = @ModifiedBy
+                    WHERE Id = @Id";
+
+        using var connection = _context.CreateConnection();
+
+        entityToUpdate.ModifiedAt = DateTime.Now;
+        entityToUpdate.ModifiedBy = "SYSTEM";
+
+        var rowsAffected = await connection.ExecuteAsync(sql, entityToUpdate);
+
+        return rowsAffected; 
     }
 
-    public Task<int> Delete(int id)
+    public async Task<int> Delete(int id)
     {
-        throw new NotImplementedException();
+        var sql = @"DELETE 
+                    FROM Robot
+                    WHERE Id = @id";
+
+        using var connection = _context.CreateConnection();
+
+        var rowsAffected = await connection.ExecuteAsync(sql, new { id });
+
+        return rowsAffected;
     }
 }
