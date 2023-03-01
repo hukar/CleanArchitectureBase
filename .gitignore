@@ -3,6 +3,12 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/main/VisualStudio.gitignore
 
+# HUKAR: Ajout pour Sqlite DB
+*.db
+
+# HUKAR: Ajout pour la configuration vscode
+.vscode
+
 # User-specific files
 *.rsuser
 *.suo
@@ -10,8 +16,6 @@
 *.userosscache
 *.sln.docstates
 
-# HUKAR : Ajout pour Sqlite DB
-*.db
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
