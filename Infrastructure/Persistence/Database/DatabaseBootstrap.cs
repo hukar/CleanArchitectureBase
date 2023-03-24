@@ -12,7 +12,10 @@ public class DatabaseBootstrap
 
     public async Task CreateDb()
     {
+        Console.WriteLine("Start create DB");
+        Console.WriteLine("Drop Tables Start");
         await DropTables();
+        Console.WriteLine("Drop Tables Finish");
 
         var sql = "";
         var tables = new List<string>();
@@ -25,7 +28,7 @@ public class DatabaseBootstrap
                         CreatedAt TEXT,
                         CreatedBy TEXT,
                         ModifiedAt TEXT,
-                        ModifiedBY
+                        ModifiedBy TEXT
                     );";
 
             tables.Add("Robot");
@@ -35,38 +38,81 @@ public class DatabaseBootstrap
         {
             sql += @"CREATE TABLE Weapon (
                         Id INTEGER PRIMARY KEY,
-                        Name TEXT,
-                        RobotID INTEGER
+                        Name TEXT
                     );";
 
             tables.Add("Weapon");
+        }
+
+        if(IsTableExists("RobotWeapon") == false)
+        {
+            sql += @"CREATE TABLE RobotWeapon (
+                        RobotId INTEGER NOT NULL,
+                        WeaponId INTEGER NOT NULL,
+                        PRIMARY KEY (RobotId, WeaponId)
+                        FOREIGN KEY (RobotId) REFERENCES Robot (Id)
+                            ON DELETE CASCADE ON UPDATE NO ACTION
+                        FOREIGN KEY (WeaponID) REFERENCES Weapon (Id)
+                            ON DELETE CASCADE ON UPDATE NO ACTION
+            )";
+
+            tables.Add("RobotWeapon");
         }
 
         if(string.IsNullOrEmpty(sql) == false)
         {
             using var connection = _context.CreateConnection();
 
+            Console.WriteLine("Create Table(s) Start");
             await connection.ExecuteAsync(sql);
             _isCreated = true;
             Console.WriteLine($"table(s) {string.Join(" and ",tables)} are created");
             return;
         }
-        
-        Console.WriteLine("tables Robot and Weapon already exists");
+        else
+        {
+            Console.WriteLine("tables for Robot and Weapon already exists");
+        }  
     }
 
     public async Task FillDb()
     {
         await Task.WhenAll(
             FillRobotDb(
-                new Robot { CodeName = "JO-JO"},
-                new Robot { CodeName = "VBG-67"},
-                new Robot { CodeName = "MICH-3L"}
+                new Robot { CodeName = "JO-JO" },
+                new Robot { CodeName = "VBG-67" },
+                new Robot { CodeName = "MICH-3L" },
+                new Robot { CodeName = "AM0-R" },
+                new Robot { CodeName = "BB-8" },
+                new Robot { CodeName = "3L-SA" },
+                new Robot { CodeName = "OL1-0" },
+                new Robot { CodeName = "RAY-M0" },
+                new Robot { CodeName = "T0T0" },
+                new Robot { CodeName = "RR-TT" },
+                new Robot { CodeName = "FIN-AL" },
+                new Robot { CodeName = "AN-ANAS" },
+                new Robot { CodeName = "R2-D2" }
             ), 
             FillWeaponDb(
-                new Weapon { Name = "Light Saber Blue", RobotId = 1},
-                new Weapon { Name = "Ultra Sword Of Fire", RobotId = 2},
-                new Weapon { Name = "Radical Blaster Gen II", RobotId = 2}
+                new Weapon { Name = "Light Saber Blue" },
+                new Weapon { Name = "Ultra Sword Of Fire" },
+                new Weapon { Name = "Radical Blaster Gen II" },
+                new Weapon { Name = "Super Saber" },
+                new Weapon { Name = "Shooter PR3" }
+            ),
+            FillRobotWeaponJoinDb(
+                new RobotWeaponJoin(1,1),
+                new RobotWeaponJoin(2,1),
+                new RobotWeaponJoin(2,2),
+                new RobotWeaponJoin(4,1),
+                new RobotWeaponJoin(4,2),
+                new RobotWeaponJoin(4,3),
+                new RobotWeaponJoin(5,4),
+                new RobotWeaponJoin(7,5),
+                new RobotWeaponJoin(7,4),
+                new RobotWeaponJoin(8,3),
+                new RobotWeaponJoin(9,3),
+                new RobotWeaponJoin(9,2)
             )
         );
     }
@@ -90,7 +136,25 @@ public class DatabaseBootstrap
         using var connection = _context.CreateConnection();
         await connection.ExecuteAsync(sql, robotsToInsert);
 
-        Console.WriteLine($"{robotsToInsert.Count()} robots was inserted successfuly");
+        Console.WriteLine($"{robotsToInsert.Length} robots was inserted successfuly");
+    }
+    private async Task FillRobotWeaponJoinDb(params RobotWeaponJoin[] robotWeaponJoinToInsert)
+    {
+        if(_isCreated == false)
+        {
+            Console.WriteLine("Use the method CreateDb first");
+            return;
+        }
+
+        var sql = @"INSERT INTO RobotWeapon (RobotId, WeaponId)
+                    VALUES (@RobotId, @WeaponId)";
+
+        
+        
+        using var connection = _context.CreateConnection();
+        await connection.ExecuteAsync(sql, robotWeaponJoinToInsert);
+
+        Console.WriteLine($"{robotWeaponJoinToInsert.Length} Robot-weapon Join was inserted successfuly");
     }
 
     private async Task FillWeaponDb(params Weapon[] weaponsToInsert)
@@ -101,19 +165,20 @@ public class DatabaseBootstrap
             return;
         }
 
-        var sql = @"INSERT INTO Weapon (Name, RobotId)
-                    VALUES (@Name, @RobotId)";
+        var sql = @"INSERT INTO Weapon (Name)
+                    VALUES (@Name)";
 
         using var connection = _context.CreateConnection();
         await connection.ExecuteAsync(sql, weaponsToInsert);
 
-        Console.WriteLine($"{weaponsToInsert.Count()} weapons was inserted successfuly");
+        Console.WriteLine($"{weaponsToInsert.Length} weapons was inserted successfuly");
     }
 
     private async Task DropTables()
     {
         var sql = @"DROP TABLE IF EXISTS Robot;
-                    DROP TABLE IF EXISTS Weapon";
+                    DROP TABLE IF EXISTS Weapon;
+                    DROP TABLE IF EXISTS RobotWeapon";
 
         using var connection = _context.CreateConnection();
         await connection.ExecuteAsync(sql);

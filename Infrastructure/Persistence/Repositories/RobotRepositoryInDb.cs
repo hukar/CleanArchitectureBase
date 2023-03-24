@@ -21,9 +21,10 @@ public class RobotRepositoryInDb : IRobotRepository
     public async Task<IEnumerable<Robot>> GetAllRobotsWithWeapons()
     {
         var sql = @"SELECT * 
-                    FROM Robot as r
-                    LEFT JOIN Weapon as w
-                    ON w.RobotId = r.Id";
+                    FROM Robot AS r
+                    LEFT JOIN RobotWeapon AS rw
+                    LEFT JOIN Weapon AS w
+                    ON r.Id = rw.Id";
 
         using var connection = _context.CreateConnection();
 
@@ -61,7 +62,11 @@ public class RobotRepositoryInDb : IRobotRepository
     public async Task<Robot?> GetRobotWithWeaponsById(int id)
     {
         var sql = @"SELECT * FROM Robot WHERE Id = @id;
-                    SELECT * FROM Weapon WHERE RobotId = @id;";
+                    SELECT * 
+                    FROM Weapon AS w
+                    LEFT JOIN RobotWeapon AS rw
+                    ON rw.RobotId = @id AND rw.WeaponId = w.Id;";
+                    
 
         using var connection = _context.CreateConnection();
 
