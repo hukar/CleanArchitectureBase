@@ -20,6 +20,10 @@ public static class RobotEndpointsExtension
             => (await sender.Send(new GetRobotWithWeaponsByIdQuery(id))) is GetRobotWithWeaponsDto robot ? Ok(robot) : NotFound()
         );
 
+        route.MapGet("/weaponslist", async (ISender sender) 
+            => await sender.Send(new GetAllWeaponsQuery())
+        );
+
         route.MapPost("/", async (CreateUpdateRobotDto robotToCreate, ISender sender) => {
             var robotCreated = await sender.Send(new CreateRobotCommand(robotToCreate));
 

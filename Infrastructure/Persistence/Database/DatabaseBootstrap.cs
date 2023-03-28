@@ -13,9 +13,9 @@ public class DatabaseBootstrap
     public async Task CreateDb()
     {
         Console.WriteLine("Start create DB");
-        Console.WriteLine("Drop Tables Start");
+        Console.WriteLine("Drop Tables Before");
         await DropTables();
-        Console.WriteLine("Drop Tables Finish");
+        Console.WriteLine("Drop Tables After");
 
         var sql = "";
         var tables = new List<string>();
@@ -94,11 +94,12 @@ public class DatabaseBootstrap
                 new Robot { CodeName = "R2-D2" }
             ), 
             FillWeaponDb(
-                new Weapon { Name = "Light Saber Blue" },
-                new Weapon { Name = "Ultra Sword Of Fire" },
-                new Weapon { Name = "Radical Blaster Gen II" },
-                new Weapon { Name = "Super Saber" },
-                new Weapon { Name = "Shooter PR3" }
+                new Weapon { Name = "Little Fire Gun" },
+                new Weapon { Name = "Blaster Of Fire" },
+                new Weapon { Name = "Mini Poison Phaser" },
+                new Weapon { Name = "Death Poison Blaster" },
+                new Weapon { Name = "Fire Light Saber" },
+                new Weapon { Name = "Green Short Saber" }
             ),
             FillRobotWeaponJoinDb(
                 new RobotWeaponJoin(1,1),
@@ -176,13 +177,21 @@ public class DatabaseBootstrap
 
     private async Task DropTables()
     {
-        var sql = @"DROP TABLE IF EXISTS Robot;
-                    DROP TABLE IF EXISTS Weapon;
-                    DROP TABLE IF EXISTS RobotWeapon";
-
+        Console.WriteLine("Start Drop Tables");
         using var connection = _context.CreateConnection();
+
+        var sql = "DROP TABLE IF EXISTS RobotWeapon";
+        await connection.ExecuteAsync(sql);
+        Console.WriteLine("RobotWeapon is Dropped");
+
+        sql = @"DROP TABLE IF EXISTS Robot;
+                    DROP TABLE IF EXISTS Weapon;";
+
+        
         await connection.ExecuteAsync(sql);
         Console.WriteLine("Tables Robot and Weapon are dropped");
+
+        Console.WriteLine("Finish Drop Tables");
     }
 
     private bool IsTableExists(string tableName)

@@ -20,11 +20,11 @@ public class RobotRepositoryInDb : IRobotRepository
     
     public async Task<IEnumerable<Robot>> GetAllRobotsWithWeapons()
     {
-        var sql = @"SELECT * 
-                    FROM Robot AS r
+        var sql = @"SELECT * FROM Robot AS r
                     LEFT JOIN RobotWeapon AS rw
+                    ON r.Id = rw.RobotId
                     LEFT JOIN Weapon AS w
-                    ON r.Id = rw.Id";
+                    ON w.Id = rw.WeaponId";
 
         using var connection = _context.CreateConnection();
 
@@ -61,11 +61,11 @@ public class RobotRepositoryInDb : IRobotRepository
 
     public async Task<Robot?> GetRobotWithWeaponsById(int id)
     {
-        var sql = @"SELECT * FROM Robot WHERE Id = @id;
-                    SELECT * 
-                    FROM Weapon AS w
-                    LEFT JOIN RobotWeapon AS rw
-                    ON rw.RobotId = @id AND rw.WeaponId = w.Id;";
+        var sql = @"SELECT * FROM Robot       
+                    WHERE Id = 4;
+                    SELECT * FROM Weapon AS w
+                    INNER JOIN RobotWeapon AS rw
+                    ON rw.RobotId = 4 AND rw.WeaponId = w.Id;";
                     
 
         using var connection = _context.CreateConnection();
@@ -128,5 +128,15 @@ public class RobotRepositoryInDb : IRobotRepository
         var rowsAffected = await connection.ExecuteAsync(sql, new { id });
 
         return rowsAffected;
+    }
+
+    public async Task<IEnumerable<Weapon>> GetAllWeapons()
+    {
+        var sql = @"SELECT * FROM Weapon";
+
+        using var connection = _context.CreateConnection();
+        var weapons = await connection.QueryAsync<Weapon>(sql);
+
+        return weapons;
     }
 }

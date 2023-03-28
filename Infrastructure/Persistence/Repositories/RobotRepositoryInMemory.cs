@@ -84,4 +84,15 @@ public class RobotRepositoryInMemory : IRobotRepository
 
         return 0; // rows affected
     }
+
+    public async Task<IEnumerable<Weapon>> GetAllWeapons()
+    {
+        await Task.Delay(500);
+        
+        return new List<Weapon> {
+            new Weapon { Id = 5, Name = "Ice Sword" },
+            new Weapon { Id = 18, Name = "Two Bullet Gun" },
+            new Weapon { Id = 20, Name = "Tri Photonic Blaster" },
+        };
+    }
 }
