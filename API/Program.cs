@@ -4,6 +4,7 @@ builder.Services.AddCors();
 
 builder.AddApplicationServices();
 
+
 var app = builder.Build();
 
 app.UseMiddleware<ExceptionHandlingMiddleware>();
