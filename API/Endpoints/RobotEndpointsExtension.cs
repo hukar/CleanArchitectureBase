@@ -1,3 +1,5 @@
+using Application.Robots.Queries.IsWeaponExists;
+
 namespace API.Endpoints;
 
 public static class RobotEndpointsExtension
@@ -22,6 +24,10 @@ public static class RobotEndpointsExtension
 
         route.MapGet("/weaponslist", async (ISender sender) 
             => await sender.Send(new GetAllWeaponsQuery())
+        );
+
+        route.MapGet("/isweaponexists", async (ISender sender, int id , string name)
+            => await sender.Send(new IsWeaponExistsQuery(new GetWeaponDto(id, name)))
         );
 
         route.MapPost("/", async (CreateUpdateRobotDto robotToCreate, ISender sender) => {

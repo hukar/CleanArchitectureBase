@@ -95,4 +95,6 @@ public class RobotRepositoryInMemory : IRobotRepository
             new Weapon { Id = 20, Name = "Tri Photonic Blaster" },
         };
     }
+
+    public async Task<bool> IsWeaponExists(Weapon weapon) => await Task.FromResult(true);
 }

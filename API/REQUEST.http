@@ -27,6 +27,15 @@ GET {{url}}/robots/99 HTTP/1.1
 ###
 GET {{url}}/robots/weaponslist HTTP/1.1
 
+### TESTER L'EXISTENCE D'UNE WEAPON
+GET {{url}}/robots/isweaponexists?id=1&name=Little%20Fire%20Gun HTTP/1.1
+###
+GET {{url}}/robots/isweaponexists?id=3&name=Little%20Fire%20Gun HTTP/1.1
+###
+GET {{url}}/robots/isweaponexists?id=1&name=Little%20FireGun HTTP/1.1
+
+### FIN TESTER
+
 ###
 POST {{url}}/robots HTTP/1.1
 Content-Type: application/json

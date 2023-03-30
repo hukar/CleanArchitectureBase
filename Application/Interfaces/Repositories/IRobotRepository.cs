@@ -4,6 +4,6 @@ public interface IRobotRepository : IRepositoryAsync<Robot>
 {
     Task<IEnumerable<Robot>> GetAllRobotsWithWeapons();
     Task<Robot?> GetRobotWithWeaponsById(int id);
-
     Task<IEnumerable<Weapon>> GetAllWeapons();
+    Task<bool> IsWeaponExists(Weapon weapon);
 }

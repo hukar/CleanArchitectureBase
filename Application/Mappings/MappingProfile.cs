@@ -6,7 +6,7 @@ public class MappingProfile : Profile
     {
         CreateMap<Robot, GetRobotDto>();
         CreateMap<Robot, GetRobotWithWeaponsDto>();
-        CreateMap<Weapon, GetWeaponDto>();
+        CreateMap<Weapon, GetWeaponDto>().ReverseMap();
         
         CreateMap<Weapon, GetWeaponInRobotDto>();
 

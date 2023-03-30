@@ -1,3 +1,5 @@
+using Application.Dtos;
+
 namespace Infrastructure.Persistence.Repositories;
 
 public class RobotRepositoryInDb : IRobotRepository
@@ -138,5 +140,15 @@ public class RobotRepositoryInDb : IRobotRepository
         var weapons = await connection.QueryAsync<Weapon>(sql);
 
         return weapons;
+    }
+
+    public async Task<bool> IsWeaponExists(Weapon weapon)
+    {
+        var sql = @"SELECT * FROM Weapon WHERE Id = @Id AND Name = @Name";
+
+        using var connection = _context.CreateConnection();
+        var weaponFromDb = await connection.QuerySingleOrDefaultAsync<Weapon>(sql, weapon);
+
+        return weaponFromDb is not null;
     }
 }
