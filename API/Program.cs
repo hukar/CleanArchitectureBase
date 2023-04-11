@@ -9,9 +9,12 @@ var app = builder.Build();
 
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 app.UseCors(policy => policy
-                        .WithOrigins("http://localhost:5157")
+                        .AllowAnyOrigin()
+                        //.WithOrigins("http://localhost:5157", "http://localhost:5053/")
                         .AllowAnyMethod()
-                        .WithHeaders("Content-Type"));
+                        .AllowAnyHeader()
+                        // .WithHeaders("Content-Type")
+                        );
 
 app.MapCreateDb()
     .MapRobot()
