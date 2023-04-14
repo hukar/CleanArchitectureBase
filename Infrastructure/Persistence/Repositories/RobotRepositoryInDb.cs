@@ -64,7 +64,7 @@ public class RobotRepositoryInDb : IRobotRepository
     public async Task<Robot?> GetRobotWithWeaponsById(int id)
     {
         var sql = @"SELECT * FROM Robot       
-                    WHERE Id = 4;
+                    WHERE Id = @id;
                     SELECT * FROM Weapon AS w
                     INNER JOIN RobotWeapon AS rw
                     ON rw.RobotId = 4 AND rw.WeaponId = w.Id;";

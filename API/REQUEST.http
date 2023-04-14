@@ -19,10 +19,10 @@ GET {{url}}/robots/withweapons HTTP/1.1
 GET {{url}}/robots/2 HTTP/1.1
 
 ###
-GET {{url}}/robots/3/withweapons HTTP/1.1
+GET {{url}}/robots/1/withweapons HTTP/1.1
 
 ###
-GET {{url}}/robots/99 HTTP/1.1
+GET {{url}}/robots/3 HTTP/1.1
 
 ###
 GET {{url}}/robots/weaponslist HTTP/1.1
@@ -33,6 +33,8 @@ GET {{url}}/robots/isweaponexists?id=1&name=Little%20Fire%20Gun HTTP/1.1
 GET {{url}}/robots/isweaponexists?id=3&name=Little%20Fire%20Gun HTTP/1.1
 ###
 GET {{url}}/robots/isweaponexists?id=1&name=Little%20FireGun HTTP/1.1
+###
+GET {{url}}/robots/isweaponexists?id=1&name= HTTP/1.1
 
 ### FIN TESTER
 
