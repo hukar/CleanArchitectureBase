@@ -19,7 +19,11 @@ public static class RobotEndpointsExtension
         );
 
         route.MapGet("/{id:int}/withweapons", async (int id, ISender sender) 
-            => (await sender.Send(new GetRobotWithWeaponsByIdQuery(id))) is GetRobotWithWeaponsDto robot ? Ok(robot) : NotFound()
+            => {
+                if(id == 3) return BadRequest();
+                
+                return (await sender.Send(new GetRobotWithWeaponsByIdQuery(id))) is GetRobotWithWeaponsDto robot ? Ok(robot) : NotFound();
+            }
         );
 
         route.MapGet("/weaponslist", async (ISender sender) 
